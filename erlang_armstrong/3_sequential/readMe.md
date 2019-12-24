@@ -2,7 +2,7 @@
 
 ### 3.1 Module
 
-1. 모듈은 erl엣 코드의 기본 단위
+1. 모듈은 erl에서 코드의 기본 단위
 2. 모듈을 컴파일한다. 결과물은 .beam 확장자를 갖는다. 컴파일시 erlc 명령어 사용
 3. Beam : Bogdan's Erlang Abstract Machine
 
@@ -13,8 +13,8 @@
     area({rectangle, Width, Ht}) -> Width * Ht;
     area({circle R}) -> 3.14159 * R * R.
     ```
-    1) area 함수는 두 절(clause)로 구성된다.
-    2) 절은 ;으로 구분된다. 마지막절은 .(dot-whitespace)으로 끝낸다.
+    <1> area 함수는 두 절(clause)로 구성된다.
+    <2> 절은 ;으로 구분된다. 마지막절은 .(dot-whitespace)으로 끝낸다.
     
     실행 예, erl cli를 사용한다
     ```
@@ -86,3 +86,45 @@
     // 확실히 erlang이 깔끔하구나.
 
     ```
+6. Erlang에서의 재귀문을 살짝 맛보도록 하자
+
+    ```erlang
+    [{oranges, 4}, {newspaper,1}, {apple,10},{pears,6}, {milk,3}]
+    ```
+    이러한 쇼핑 목록(항목, 개수)이 있을 때, 쇼핑 비용의 총합을 구하는 프로그램을 작성해보자
+    일단 개수당 가격은 1이라고 정하자. 
+
+    ```erlang
+    -module(shop).
+    -export([total/1]).
+
+    total([{What, N}|T]) -> N * 1+ total(T);
+    total([]) -> 0.
+    ```
+
+7. 이름은 같고 애리티가 다른 함수, overloading에 대응되는 부분 
+
+    * 함수의 애리티(arity)는 그 함수가 가지는 인수의 수
+    * 한 모듈에서 이름은 같고 애리티가 다른 함수 두 개는 전적으로 다른 함수를 의미.
+    
+8. fun 
+
+    * fun은 익명 함수이다. 
+    ```erlang
+    1> Double = fun(X) -> 2*X end.
+    ```
+
+    * temperature unit conversion code 이다
+    ```erlang
+    1> TempConvert = fun({c, C}) -> {f, 32 + C*18/10};
+                ({f, F}) -> {c, (F-32)*10/18}
+                end.
+    2> TempConvert({c, 100}).
+    >> {f, 212.000}
+    3> TempConvert({f, 212}).
+    >> {c, 100.000}
+    ```
+
+
+
+
