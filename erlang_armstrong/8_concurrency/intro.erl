@@ -1,4 +1,4 @@
--module(concurrency).
+-module(intro).
 -export([loop/0]).
 
 loop()->
