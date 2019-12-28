@@ -50,7 +50,7 @@
 
 ### 3. 명령행 인수를 가지는 프로그램
     
-* factorial 프로그램을 보세요 [fac] (./fac/factorial)
+* factorial 프로그램을 보세요 [fac](./fac/factorial)
 
 
 ### 5. Makefile로 컴파일 자동화하기 
