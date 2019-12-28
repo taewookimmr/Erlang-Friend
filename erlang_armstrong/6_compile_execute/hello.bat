@@ -1,0 +1,1 @@
+"C:\Program Files\erl10.5\bin\erl.exe" -noshell -s hello start -s init stop

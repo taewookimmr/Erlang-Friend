@@ -1,1 +1,2 @@
 io:format("[local .erlang file]~n").
+code:add_patha(".").
