@@ -41,7 +41,16 @@
     * -s init stop : apply(hello, start, [])가 완료되면 시스템은 init:stop()을 수행한다. 
 
     * shellscript를 만들어서 사용할 수 있다. 
-        * window용으로 hello.bat
-        * bash용으로 hello.sh
+        * window용으로 [hello.bat](./hello/hello.bat)
+        * bash용으로 [hello.sh](./hello/hello.sh)
     
 * Escript로 실행하기 
+    * hello 파일을 보세요 [hello](./hello/hello)
+
+
+### 3. 명령행 인수를 가지는 프로그램
+    
+* factorial 프로그램을 보세요 [fac] (./fac/factorial)
+
+
+### 5. Makefile로 컴파일 자동화하기 
