@@ -53,4 +53,8 @@
 * factorial 프로그램을 보세요 [fac](./fac/factorial)
 
 
-### 5. Makefile로 컴파일 자동화하기 
+### 4. Makefile로 컴파일 자동화하기 
+
+* [MakeFile](./makefileautomation/MakeFile)
+
+
