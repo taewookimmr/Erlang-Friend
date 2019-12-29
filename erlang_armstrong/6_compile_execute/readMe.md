@@ -55,6 +55,6 @@
 
 ### 4. Makefile로 컴파일 자동화하기 
 
-* [MakeFile](./makefileautomation/MakeFile)
+* [MakeFile](./makefileautomation/Makefile)
 
 
