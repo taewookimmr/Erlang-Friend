@@ -175,6 +175,6 @@
 
 ### 8. 과제
 
-* spawn(Fun)을 AnAtom으로 등록하는 start(AnAtom, Fun) 함수를 작성하여라. [Code](./task/task1)
-* Ring 벤치마크를 작성, 링에 프로세스를 N개 생성하자, 링을 돌며 M번 메시지를 보내 총 N*M 개의 메시지를 보내자. N, M을 바꿔가며 시간 변화를 측정해봐라. [Code](./task/task2)
+* spawn(Fun)을 AnAtom으로 등록하는 start(AnAtom, Fun) 함수를 작성하여라. [Code](./task/task1.erl)
+* Ring 벤치마크를 작성, 링에 프로세스를 N개 생성하자, 링을 돌며 M번 메시지를 보내 총 N*M 개의 메시지를 보내자. N, M을 바꿔가며 시간 변화를 측정해봐라. [Code](./task/task2.erl)
 
