@@ -54,8 +54,15 @@ demo(join) ->
                                 X#shop.quantity < 250,
                                 Y <- mnesia:table(cost),
                                 X#shop.item =:= Y#cost.name,
-                                Y#cost.price < 2 ])).
-                
+                                Y#cost.price < 2 ]));
+
+demo(join_test) -> 
+    do( qlc:q([X#shop.item || X <- mnesia:table(shop),
+                            X#shop.quantity < 250,
+                            Y <- mnesia:table(cost),
+                            Y#cost.price < 2 ,
+                            X#shop.item =:= Y#cost.name])).
+
 do(Q) ->
     F = fun() -> qlc:e(Q) end,
     {atomic, Val} = mnesia:transaction(F),
@@ -99,7 +106,7 @@ farmer(Nwant) ->
         Napples = Apple#shop.quantity,
         Apple1 = Apple#shop{quantity = Napples + 2 * Nwant},
         %% database update
-        mnesia:wrtie(Apple1),
+        mnesia:write(Apple1),
         
         [Orange] = mnesia:read({shop, orange}),
         NOranges = Orange#shop.quantity,
@@ -111,7 +118,7 @@ farmer(Nwant) ->
                 mnesia:write(Orange1);
             true ->
                 %% when orange is not enough
-                mnesia:abort(oranges)
+                mnesia:abort(freak_on_a_leash)
         end
     end,
     mnesia:transaction(F).
