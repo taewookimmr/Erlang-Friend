@@ -1,1 +1,1 @@
-werl -pa ./ebin -eval "application:start(mon)"
+werl -args_file vm.args

@@ -36,13 +36,33 @@
   {ok, pid(), State :: term()} |
   {error, Reason :: term()}).
 start(_StartType, _StartArgs) ->
-  case 'mon_sup':start_link() of
+  %% 필요한 어플리케이션 실행
+  ok = application:start(crypto),
+  ok = application:start(cowlib),
+  ok = application:start(ranch),
+  ok = application:start(cowboy),
+
+  %% Cowboy router 설정
+  Dispatch = cowboy_router:compile([
+    {'_', [
+      {"/hello/world", mon_http, []}
+    ]}
+  ]),
+
+  %% Http server 실행
+  {ok, _} = cowboy:start_http(http, 100, [{port, 6060}], [
+    {env, [{dispatch, Dispatch}]}
+  ]),
+  case mon_sup:start_link() of
     {ok, Pid} ->
-      io:format("start but something differnt from the textbook~n"),
+      io:format("start ok~n"),
       {ok, Pid};
+
     Error ->
       Error
+
   end.
+
 
 %%--------------------------------------------------------------------
 %% @private
