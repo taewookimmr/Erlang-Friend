@@ -1,0 +1,19 @@
+%%%-------------------------------------------------------------------
+%%% @author taewookim
+%%% @copyright (C) 2020, <COMPANY>
+%%% @doc
+%%%
+%%% @end
+%%% Created : 01. 1월 2020 오전 2:24
+%%%-------------------------------------------------------------------
+{application, mon, [
+  {description, ""},
+  {vsn, "1"},
+  {registered, []},
+  {applications, [
+    kernel,
+    stdlib
+  ]},
+  {mod, {mon_app, []}},
+  {env, []}
+]}.
