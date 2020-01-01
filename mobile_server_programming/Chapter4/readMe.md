@@ -31,9 +31,9 @@
 
 * API 정의
 
-    |   Method  |   API |   Body Query String   | Description   |Retun Data|
-    |---|---|---|---|---|---|
-    |Post|/hello/world||서버와 테스트 통신| result::ANY|
+    |Method|API|Body Query String|Description|Retun Data|
+    |---|---|---|---|---|
+    |Post|/hello/world|...|서버와 테스트 통신| result::ANY|
     |Post|/join|id::아이디, password::패스워드|회원가입| result::ok|fail|
     |Post|/login|id::아이디, password::패스워드|로그인| result::ok|fail|
 
