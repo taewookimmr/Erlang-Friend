@@ -96,7 +96,30 @@
     % when MTime >= From, MTime < To 이 부분을 믿어도 되는지 잘 모르겠다.
     % MTime > To 인 상황이 생길 수 있지 않은가? 아 그렇지 그러면 skip되겠지 한번은, 그리고나서 그 다음 사이클에선 잡히겠구나 ok     
     ```
+    
 
 
+### /login, /join
 
+* cowboy_req:body_qs() : HTTP의 Body 값을 읽어 온다. 
+```erlang
+...
+%% Data loading
+{ok, Data, Req4} = cowboy_req:body_qs(Req3),
+...
 
+handle(<<"login">>, _,_,Data) ->
+  Id = proplists:get_value(<<"id">>, Data),
+  Password = proplists:get_value(<<"password">>, Data),
+  case {Id, Password} of
+    {<<"testid">>, <<"testpass">>} ->
+      <<"{\"result\":\"login ok\"}">>;
+    _ ->
+      <<"{\"result\":\"login fail\"}">>;
+    end;
+
+...
+```
+
+    * proplists:get_value(First, Second) : First는 key, Second는 Data
+    

@@ -19,13 +19,37 @@ handle(Req,  State) ->
   {Api, Req1} = cowboy_req:binding(api, Req),
   {What, Req2} = cowboy_req:binding(what, Req1),
   {Opt, Req3} = cowboy_req:binding(opt, Req2),
+  %% Data loading
+  {ok, Data, Req4} = cowboy_req:body_qs(Req3),
 
   io:format("good api=~p, what=~p, opt=~p ~n", [Api, What, Opt]),
+  Reply = handle(Api, What, Opt, Req3),
 
-  {ok, Req4} = cowboy_req:reply(200,[
+  {ok, Req5} = cowboy_req:reply(200,[
     {<<"content-type">>, <<"text/plain">>}
-  ], <<"{\"result\":\"Hello World\"}">>, Req3),
-  {ok, Req4, State}.
+  ], Reply, Req4),
+  {ok, Req5, State}.
+
+handle(<<"login">>, _,_,Data) ->
+  Id = proplists:get_value(<<"id">>, Data),
+  Password = proplists:get_value(<<"password">>, Data),
+  case {Id, Password} of
+    {<<"testid">>, <<"testpass">>} ->
+      <<"{\"result\":\"login ok\"}">>;
+    _ ->
+      <<"{\"result\":\"login fail\"}">>;
+    end;
+
+
+handle(<<"join">>, _,_,_) ->
+  <<"{\"result\":\"join\"}">>;
+
+handle(<<"hello">>, <<"world">>,_,_) ->
+  <<"{\"result\":\"Hello World\"}">>;
+
+handle(_, _,_,_) ->
+  <<"{\"result\":\"error\"}">>.
+
 
 
 terminate(_Reason, _Req, _State) ->

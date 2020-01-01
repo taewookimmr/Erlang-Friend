@@ -23,6 +23,8 @@ loop(From)->
       To = erlang:localtime(),
       [check(From, To, Module, Filename) || {Module, Filename} <- code:all_loaded(), is_list(Filename)],
       loop(To);
+    update->
+      ?MODULE:loop(From); % 아직 까지는 프로세스에서 수동으로 update를 보내주어야 하는 단점. 6장에서 보완한다.
     Other ->
       io:format("~p~n",[Other]),
       loop(From)
