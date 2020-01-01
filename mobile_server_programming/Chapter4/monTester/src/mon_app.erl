@@ -56,6 +56,7 @@ start(_StartType, _StartArgs) ->
 
   %% Code_reloader 실행
   mon_reloader:start(),
+
   case mon_sup:start_link() of
     {ok, Pid} ->
       io:format("start ok~n"),

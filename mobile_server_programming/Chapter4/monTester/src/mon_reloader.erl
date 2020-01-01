@@ -21,7 +21,7 @@ loop(From)->
   receive
     check->
       To = erlang:localtime(),
-      [check(From, To, Module, filename) || {Module, Filename} <- code:all_loaded(), is_list(Filename)],
+      [check(From, To, Module, Filename) || {Module, Filename} <- code:all_loaded(), is_list(Filename)],
       loop(To);
     Other ->
       io:format("~p~n",[Other]),

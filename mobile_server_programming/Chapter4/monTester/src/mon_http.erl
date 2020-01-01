@@ -20,7 +20,7 @@ handle(Req,  State) ->
   {What, Req2} = cowboy_req:binding(what, Req1),
   {Opt, Req3} = cowboy_req:binding(opt, Req2),
 
-  io:format("Pistol grip pump api=~p, what=~p, opt=~p ~n", [Api, What, Opt]),
+  io:format("good api=~p, what=~p, opt=~p ~n", [Api, What, Opt]),
 
   {ok, Req4} = cowboy_req:reply(200,[
     {<<"content-type">>, <<"text/plain">>}
