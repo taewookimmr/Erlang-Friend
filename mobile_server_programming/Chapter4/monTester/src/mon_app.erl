@@ -45,7 +45,7 @@ start(_StartType, _StartArgs) ->
   %% Cowboy router 설정
   Dispatch = cowboy_router:compile([
     {'_', [
-      {"/hello/world", mon_http, []}
+      {"/:api/[:what/[:opt]]", mon_http, []}
     ]}
   ]),
 
@@ -53,6 +53,9 @@ start(_StartType, _StartArgs) ->
   {ok, _} = cowboy:start_http(http, 100, [{port, 6060}], [
     {env, [{dispatch, Dispatch}]}
   ]),
+
+  %% Code_reloader 실행
+  mon_reloader:start(),
   case mon_sup:start_link() of
     {ok, Pid} ->
       io:format("start ok~n"),

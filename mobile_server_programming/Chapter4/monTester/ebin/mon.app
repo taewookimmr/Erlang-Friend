@@ -5,4 +5,4 @@
               {applications,[kernel,stdlib]},
               {mod,{mon_app,[]}},
               {env,[]},
-              {modules,[mon_app,mon_http,mon_sup]}]}.
+              {modules,[mon_app,mon_http,mon_reloader,mon_sup]}]}.
