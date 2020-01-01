@@ -23,25 +23,28 @@ handle(Req,  State) ->
   {ok, Data, Req4} = cowboy_req:body_qs(Req3),
 
   io:format("good api=~p, what=~p, opt=~p ~n", [Api, What, Opt]),
-  Reply = handle(Api, What, Opt, Req3),
+  Reply = handle(Api, What, Opt, Data),
 
   {ok, Req5} = cowboy_req:reply(200,[
     {<<"content-type">>, <<"text/plain">>}
   ], Reply, Req4),
   {ok, Req5, State}.
 
-handle(<<"login">>, _,_,Data) ->
+handle(<<"login">>, _, _, Data) ->
   Id = proplists:get_value(<<"id">>, Data),
   Password = proplists:get_value(<<"password">>, Data),
-  case {Id, Password} of
-    {<<"testid">>, <<"testpass">>} ->
+  case ets:lookup(users_list, Id) of
+    [{Id, Password}]->
       <<"{\"result\":\"login ok\"}">>;
     _ ->
-      <<"{\"result\":\"login fail\"}">>;
+      <<"{\"result\":\"login fail\"}">>
     end;
 
 
-handle(<<"join">>, _,_,_) ->
+handle(<<"join">>, _,_, Data) ->
+  Id = proplists:get_value(<<"id">>, Data),
+  Password = proplists:get_value(<<"password">>, Data),
+  ets:insert_new(users_list, {Id, Password}),
   <<"{\"result\":\"join\"}">>;
 
 handle(<<"hello">>, <<"world">>,_,_) ->

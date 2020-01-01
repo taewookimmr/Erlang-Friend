@@ -102,24 +102,72 @@
 ### /login, /join
 
 * cowboy_req:body_qs() : HTTP의 Body 값을 읽어 온다. 
-```erlang
-...
-%% Data loading
-{ok, Data, Req4} = cowboy_req:body_qs(Req3),
-...
 
-handle(<<"login">>, _,_,Data) ->
-  Id = proplists:get_value(<<"id">>, Data),
-  Password = proplists:get_value(<<"password">>, Data),
-  case {Id, Password} of
-    {<<"testid">>, <<"testpass">>} ->
-      <<"{\"result\":\"login ok\"}">>;
-    _ ->
-      <<"{\"result\":\"login fail\"}">>;
-    end;
+    ```erlang
+    ...
+    %% Data loading
+    {ok, Data, Req4} = cowboy_req:body_qs(Req3),
+    ...
 
-...
-```
+    handle(<<"login">>, _,_,Data) ->
+    Id = proplists:get_value(<<"id">>, Data),
+    Password = proplists:get_value(<<"password">>, Data),
+    case {Id, Password} of
+        {<<"testid">>, <<"testpass">>} ->
+        <<"{\"result\":\"login ok\"}">>;
+        _ ->
+        <<"{\"result\":\"login fail\"}">>;
+        end;
+
+    ...
+    ```
 
     * proplists:get_value(First, Second) : First는 key, Second는 Data
-    
+    * 쉽게 생각해서 key를 넣어주면 value를 뱉어내는 함수여
+
+
+* 회원가입 기능, /join을 구현하려면,, 데이터를 어딘가에 저장해야할 필요가 있다. ETS, Dets ㄱㄱ
+
+### ETS와 Dets
+
+* Erlang Term Storage, 얼랭에 내장된 메모리 데이터베이스
+* key-value 방식의 NoSQL, Erlang VM에 내장됨
+
+* Dets : Disk ETS : ETS 기능을 파일 베이스로 만든 버전, 테이블 하나당 2GB 용량 제한 
+
+* ETS의 모든 기능은 ets모듈에 BIF로 구현됨
+
+* ETS에 데이터를 저장히기 위해서는 테이블 생성해야함.
+
+    * 테이블에는 얼랭의 튜플 형식만 저장가능
+    * 기본적으로 첫번째 값이 p-key
+
+* ETS 테이블 타입 : set, ordered_set, bag, duplicate_bag
+
+    * set : 오직 하나의 key에 대한 object만 허용. write, delete, select의 Time complexity = O(1)
+    * set과 같지만 정렬된다. 성능은 O(log n)
+    * bag : key에 대해서 중복 데이터가 가능하다. 그런데 전체적으로는 구별되어야 한다.
+        {orange,1,500}, {orange,2,400}이 허용된다는 것
+    * duplicate bag : {apple,1,2}, {apple,1,2}가 허용된다. 
+
+* 테이블에 대한 Access 권한 : public, protected, private
+
+    * public : 어떤 프로세스든지 rw가능
+    * protected : 소유자만 rw, 나머지는 r, 이것이 default
+    * private : only 소유자 rw
+
+* 테이블 create, write, read 예시
+    ```erlang
+    1> ets:new(test_table, [public, named_table]).
+    >> test_table
+    2> ets:insert(test_table, {apple,1}).
+    >> true
+    3> ets:lookup(test_table, apple).
+    >> [{apple, 1}]
+    ```
+
+
+### 중간 점검
+
+* 데이터 베이스의 부재, 회원 정보 저장 문제
+* User session이 없다 : 로그인 하면 무한정 로그인, 로그아웃 개념이 없다. 동시 로그인도 판별할 수단이 없다. 
