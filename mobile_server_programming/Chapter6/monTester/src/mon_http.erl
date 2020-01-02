@@ -55,13 +55,24 @@ handle(<<"join">>, _,_, Data) ->
     end;
 
 handle(<<"users">>, <<"point">>, _, Data) ->
+    SessionKey = proplists:get_value(<<"session_key">>, Data),
+    Point1 = proplists:get_value(<<"point">>, Data),
+    Point = binary_to_integer(Point1),
+%%    io:format("handle users point, here i am"),  %% 확인
+    case mon_users:point(SessionKey, Point) of
+        ok ->
+            jsx:encode([{<<"result">>, <<"ok">>}]);
+        fail ->
+            jsx:encode([{<<"result">>, <<"fail">>}])
+    end;
 
 
-    handle(<<"hello">>, <<"world">>,_,_) ->
-jsx:encode([{<<"result">>, <<"Hello World">>}]);
+
+handle(<<"hello">>, <<"world">>,_,_) ->
+    jsx:encode([{<<"result">>, <<"Hello World">>}]);
 
 handle(_, _,_,_) ->
-jsx:encode([{<<"result">>, <<"error">>}]).
+    jsx:encode([{<<"result">>, <<"error">>}]).
 
 
 
