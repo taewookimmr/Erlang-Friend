@@ -109,8 +109,8 @@ make_session_key(Id, Pid) ->
     SessionKey.
 
 make_session_key_temp(Id, Pid)->
-    ets:insert(session_list, {12345, Pid}),
-    12345.
+    ets:insert(session_list, {1111, Pid}),
+    1111.
 
 
 
