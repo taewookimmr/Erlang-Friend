@@ -1,0 +1,1 @@
+werl -pa ./ebin -eval "application:start(mon)"
