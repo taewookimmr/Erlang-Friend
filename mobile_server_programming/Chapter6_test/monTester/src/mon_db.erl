@@ -7,7 +7,7 @@
 %%%
 %%%-------------------------------------------------------------------
 -module(mon_db).
--author("이국현").
+-author("taewookim").
 
 -include("mon_record.hrl").
 

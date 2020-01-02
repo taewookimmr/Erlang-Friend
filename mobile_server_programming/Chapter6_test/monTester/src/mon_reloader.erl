@@ -1,5 +1,5 @@
 %%%-------------------------------------------------------------------
-%%% @author 이국현
+%%% @author taewookim
 %%% @copyright (C) <COMPANY>
 %%% @doc
 %%% 코드 리로더
@@ -7,7 +7,7 @@
 %%%
 %%%-------------------------------------------------------------------
 -module(mon_reloader).
--author("이국현").
+-author("taewookim").
 
 -include_lib("kernel/include/file.hrl").
 

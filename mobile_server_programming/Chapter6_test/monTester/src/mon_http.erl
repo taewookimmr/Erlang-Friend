@@ -1,5 +1,5 @@
 %%%-------------------------------------------------------------------
-%%% @author 이국현
+%%% @author taewookim
 %%% @copyright (C) <COMPANY>
 %%% @doc
 %%%
@@ -7,7 +7,7 @@
 %%%
 %%%-------------------------------------------------------------------
 -module(mon_http).
--author("이국현").
+-author("taewookim").
 
 %% API
 -export([init/3, handle/2, terminate/3]).
