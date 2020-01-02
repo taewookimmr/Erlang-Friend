@@ -26,7 +26,7 @@
 %% @doc Starts the supervisor
 -spec(start_link() -> {ok, Pid :: pid()} | ignore | {error, Reason :: term()}).
 start_link() ->
-  supervisor:start_link({local, ?SERVER}, ?MODULE, []).
+    supervisor:start_link({local, ?SERVER}, ?MODULE, []).
 
 %%%===================================================================
 %%% Supervisor callbacks
@@ -38,16 +38,16 @@ start_link() ->
 %% restart strategy, maximum restart frequency and child
 %% specifications.
 -spec(init(Args :: term()) ->
-  {ok, {SupFlags :: {RestartStrategy :: supervisor:strategy(),
-    MaxR :: non_neg_integer(), MaxT :: non_neg_integer()},
-    [ChildSpec :: supervisor:child_spec()]}}
-  | ignore | {error, Reason :: term()}).
+    {ok, {SupFlags :: {RestartStrategy :: supervisor:strategy(),
+        MaxR :: non_neg_integer(), MaxT :: non_neg_integer()},
+        [ChildSpec :: supervisor:child_spec()]}}
+    | ignore | {error, Reason :: term()}).
 init([]) ->
-  MaxRestarts = 1000,
-  MaxSecondsBetweenRestarts = 3600,
-  SupFlags = #{strategy => one_for_one,
-    intensity => MaxRestarts,
-    period => MaxSecondsBetweenRestarts},
+    MaxRestarts = 1000,
+    MaxSecondsBetweenRestarts = 3600,
+    SupFlags = #{strategy => one_for_one,
+        intensity => MaxRestarts,
+        period => MaxSecondsBetweenRestarts},
 
 %%  AChild = #{id => 'AName',
 %%    start => {'AModule', start_link, []},
@@ -57,7 +57,7 @@ init([]) ->
 %%    modules => ['AModule']},
 %%
 %%  {ok, {SupFlags, [AChild]}}.
-  {ok, {SupFlags, []}}.
+    {ok, {SupFlags, []}}.
 
 %%%===================================================================
 %%% Internal functions

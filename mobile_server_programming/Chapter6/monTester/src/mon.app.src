@@ -7,13 +7,13 @@
 %%% Created : 01. 1월 2020 오전 3:16
 %%%-------------------------------------------------------------------
 {application, mon, [
-  {description, ""},
-  {vsn, "1"},
-  {registered, []},
-  {applications, [
-    kernel,
-    stdlib
-  ]},
-  {mod, {mon_app, []}},
-  {env, []}
+    {description, ""},
+    {vsn, "1"},
+    {registered, []},
+    {applications, [
+        kernel,
+        stdlib
+    ]},
+    {mod, {mon_app, []}},
+    {env, []}
 ]}.

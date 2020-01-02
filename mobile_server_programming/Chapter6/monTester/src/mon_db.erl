@@ -15,11 +15,11 @@
 
 
 install() ->
-  ok = mnesia:create_schema([node()]),
-  application:start(mnesia),
-  mnesia:create_table(users, [{attributes, record_info(fields, users)}, {disc_copies, [node()]}]),
-  application:stop(mnesia).
+    ok = mnesia:create_schema([node()]),
+    application:start(mnesia),
+    mnesia:create_table(users, [{attributes, record_info(fields, users)}, {disc_copies, [node()]}]),
+    application:stop(mnesia).
 
 uninstall()->
-  application:stop(mnesia),
-  mnesia:delete_schema(node()).
+    application:stop(mnesia),
+    mnesia:delete_schema(node()).
