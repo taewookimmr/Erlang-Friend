@@ -1,1 +1,0 @@
-werl -args_file vm.args
