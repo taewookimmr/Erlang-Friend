@@ -1,13 +1,13 @@
 %%%-------------------------------------------------------------------
-%%% @author taewookim
-%%% @copyright (C) 2020, <COMPANY>
+%%% @author 이국현
+%%% @copyright (C) <COMPANY>
 %%% @doc
 %%%
 %%% @end
-%%% Created : 01. 1월 2020 오전 3:15
+%%%
 %%%-------------------------------------------------------------------
 -module(mon_app).
--author("taewookim").
+-author("이국현").
 
 -behaviour(application).
 
@@ -43,19 +43,18 @@ start(_StartType, _StartArgs) ->
     ok = application:start(cowboy),
     ok = application:start(mnesia),
 
-    %% Cowboy router 설정
+    %% Cowboy Router 설정
     Dispatch = cowboy_router:compile([
         {'_', [
             {"/:api/[:what/[:opt]]", mon_http, []}
         ]}
     ]),
-
-    %% Http server 실행
+    %% HTTP Server 실행
     {ok, _} = cowboy:start_http(http, 100, [{port, 6060}], [
         {env, [{dispatch, Dispatch}]}
     ]),
 
-    %% Code_reloader 실행
+    %% Code reloader 실행
     mon_reloader:start(),
 
     %% Session Table 생성
@@ -65,12 +64,9 @@ start(_StartType, _StartArgs) ->
         {ok, Pid} ->
             io:format("start ok~n"),
             {ok, Pid};
-
         Error ->
             Error
-
     end.
-
 
 %%--------------------------------------------------------------------
 %% @private

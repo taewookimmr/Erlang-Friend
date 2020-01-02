@@ -1,13 +1,13 @@
 %%%-------------------------------------------------------------------
-%%% @author taewookim
-%%% @copyright (C) 2020, <COMPANY>
+%%% @author 이국현
+%%% @copyright (C) <COMPANY>
 %%% @doc
 %%%
 %%% @end
-%%% Created : 01. 1월 2020 오전 3:18
+%%%
 %%%-------------------------------------------------------------------
 -module(mon_sup).
--author("taewookim").
+-author("이국현").
 
 -behaviour(supervisor).
 
@@ -23,8 +23,14 @@
 %%% API functions
 %%%===================================================================
 
-%% @doc Starts the supervisor
--spec(start_link() -> {ok, Pid :: pid()} | ignore | {error, Reason :: term()}).
+%%--------------------------------------------------------------------
+%% @doc
+%% Starts the supervisor
+%%
+%% @end
+%%--------------------------------------------------------------------
+-spec(start_link() ->
+    {ok, Pid :: pid()} | ignore | {error, Reason :: term()}).
 start_link() ->
     supervisor:start_link({local, ?SERVER}, ?MODULE, []).
 
@@ -32,31 +38,36 @@ start_link() ->
 %%% Supervisor callbacks
 %%%===================================================================
 
+%%--------------------------------------------------------------------
 %% @private
-%% @doc Whenever a supervisor is started using supervisor:start_link/[2,3],
+%% @doc
+%% Whenever a supervisor is started using supervisor:start_link/[2,3],
 %% this function is called by the new process to find out about
 %% restart strategy, maximum restart frequency and child
 %% specifications.
+%%
+%% @end
+%%--------------------------------------------------------------------
 -spec(init(Args :: term()) ->
     {ok, {SupFlags :: {RestartStrategy :: supervisor:strategy(),
         MaxR :: non_neg_integer(), MaxT :: non_neg_integer()},
-        [ChildSpec :: supervisor:child_spec()]}}
-    | ignore | {error, Reason :: term()}).
+        [ChildSpec :: supervisor:child_spec()]
+    }} |
+    ignore |
+    {error, Reason :: term()}).
 init([]) ->
+    RestartStrategy = one_for_one,
     MaxRestarts = 1000,
     MaxSecondsBetweenRestarts = 3600,
-    SupFlags = #{strategy => one_for_one,
-        intensity => MaxRestarts,
-        period => MaxSecondsBetweenRestarts},
 
-%%  AChild = #{id => 'AName',
-%%    start => {'AModule', start_link, []},
-%%    restart => permanent,
-%%    shutdown => 2000,
-%%    type => worker,
-%%    modules => ['AModule']},
-%%
-%%  {ok, {SupFlags, [AChild]}}.
+    SupFlags = {RestartStrategy, MaxRestarts, MaxSecondsBetweenRestarts},
+
+    Restart = permanent,
+    Shutdown = 2000,
+    Type = worker,
+
+    %%AChild = {'AName', {'AModule', start_link, []},
+    %%    Restart, Shutdown, Type, ['AModule']},
     {ok, {SupFlags, []}}.
 
 %%%===================================================================

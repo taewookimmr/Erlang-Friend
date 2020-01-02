@@ -1,5 +1,5 @@
 %%%-------------------------------------------------------------------
-%%% @author
+%%% @author 이국현
 %%% @copyright (C) <COMPANY>
 %%% @doc
 %%% 유저 관리
@@ -7,8 +7,7 @@
 %%%
 %%%-------------------------------------------------------------------
 -module(mon_users).
--author("김태우").
-
+-author("이국현").
 
 -include("mon_record.hrl").
 
@@ -17,28 +16,28 @@
 
 join(Id, Password) ->
     F = fun() ->
-            case mnesia:read(users, Id) of
-                [] ->
-                    %% 해당 Id로 가입된 데이터가 없으면 저장한다
-                    Users = #users{id=Id, password=Password},
-                    ok = mnesia:write(Users); %% 가입완료
-                _ ->
-                    fail %% 가입 실패
-            end
+        case mnesia:read(users, Id) of
+            [] ->
+                %% 해당 Id로 가입된 데이터가 없으면 저장한다
+                Users = #users{id=Id, password=Password},
+                ok = mnesia:write(Users); %% 가입완료
+            _ ->
+                fail %% 가입 실패
+        end
         end,
     mnesia:activity(transaction, F).
 
 login(Id, Password) ->
     F = fun() ->
-            case mnesia:read(users, Id) of
-                [U = #users{password=Password}] ->
-                    %% Id, Password 일치, 로그인 성공
-                    SessionKey = new_session(Id),
-                    {ok, SessionKey};
-                _ ->
-                    %% 일치하는 데이터 없음, 로그인 실패
-                    fail
-            end
+        case mnesia:read(users, Id) of
+            [U = #users{password=Password}] ->
+                %% Id, Password 일치, 로그인 성공
+                SessionKey = new_session(Id),
+                {ok, SessionKey};
+            _ ->
+                %% 일치하는 데이터 없음, 로그인 실패
+                fail
+        end
         end,
     mnesia:activity(transaction, F).
 
@@ -63,7 +62,7 @@ point(SessionKey, Point) ->
 new_session(Id) ->
     Time = now(),
     Pid = spawn(mon_users, loop, [Id, Time]),
-    SessionKey = make_session_key_temp(Id, Pid),
+    SessionKey = make_session_key(Id, Pid),
     erlang:send_after(1000, Pid, {check}),
     SessionKey.
 
@@ -78,8 +77,8 @@ loop(Id, Time) ->
             {check} ->
                 Diff = timer:now_diff(now(), Time),
                 %% Diff는 마이크로 세컨드 단위이다.
-                %% 10초가 지났으면 세션 종료
-                if (Diff > 10000000) -> delete_session_key(self());
+                %% 100초가 지났으면 세션 종료
+                if (Diff > 100000000) -> delete_session_key(self());
                     true -> erlang:send_after(1000, self(), {check})
                 end,
                 Time;
@@ -102,17 +101,12 @@ make_session_key(Id, Pid) ->
 
     %% 두개의 값을 16진수로 조합하여 session key 생성
     List = io_lib:format("~.16B~.16B", [Hash, Num]),
-    SessionKey = list_to_binary(lists:append(List)),
+%%    SessionKey = erlang:list_to_binary(lists:append(List)),
+    SessionKey = erlang:list_to_binary(List),
 
     %% 세션 키 저장 및 리턴
     ets:insert(session_list, {SessionKey, Pid}),
     SessionKey.
-
-make_session_key_temp(Id, Pid)->
-    ets:insert(session_list, {1111, Pid}),
-    1111.
-
-
 
 %% 세션 키 제거 및 프로세스 종료
 delete_session_key(Pid) ->
@@ -131,5 +125,5 @@ save_point(Id, Point) ->
             _ ->
                 fail %% 저장 실패
         end
-    end,
+        end,
     mnesia:activity(transaction, F).
