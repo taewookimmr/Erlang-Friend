@@ -4,3 +4,4 @@
 -pa ./deps/ranch/ebin
 -eval "application:start(mon)"
 -sname node1
+-mnesia dir '"./db"'

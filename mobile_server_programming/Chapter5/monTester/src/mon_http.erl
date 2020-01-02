@@ -33,8 +33,8 @@ handle(Req,  State) ->
 handle(<<"login">>, _, _, Data) ->
   Id = proplists:get_value(<<"id">>, Data),
   Password = proplists:get_value(<<"password">>, Data),
-  case ets:lookup(users_list, Id) of
-    [{Id, Password}]->
+  case mon_users:login(Id, Password) of
+    ok ->
       <<"{\"result\":\"login ok\"}">>;
     _ ->
       <<"{\"result\":\"login fail\"}">>
@@ -44,8 +44,13 @@ handle(<<"login">>, _, _, Data) ->
 handle(<<"join">>, _,_, Data) ->
   Id = proplists:get_value(<<"id">>, Data),
   Password = proplists:get_value(<<"password">>, Data),
-  ets:insert_new(users_list, {Id, Password}),
-  <<"{\"result\":\"join\"}">>;
+  case mon_users:join(Id, Password) of
+    fail ->
+      <<"{\"result\":\"duplicated\"}">>;
+    ok ->
+      <<"{\"result\":\"join\"}">>
+  end;
+
 
 handle(<<"hello">>, <<"world">>,_,_) ->
   <<"{\"result\":\"Hello World\"}">>;

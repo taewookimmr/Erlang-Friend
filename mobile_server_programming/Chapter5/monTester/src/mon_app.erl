@@ -41,6 +41,7 @@ start(_StartType, _StartArgs) ->
   ok = application:start(cowlib),
   ok = application:start(ranch),
   ok = application:start(cowboy),
+  ok = application:start(mnesia),
 
   %% Cowboy router 설정
   Dispatch = cowboy_router:compile([
@@ -56,9 +57,6 @@ start(_StartType, _StartArgs) ->
 
   %% Code_reloader 실행
   mon_reloader:start(),
-
-  %% ETS table 실행
-  ets:new(users_list, [public, named_table]),
 
   case mon_sup:start_link() of
     {ok, Pid} ->
