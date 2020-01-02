@@ -34,8 +34,8 @@
     |Method|API|Body Query String|Description|Retun Data|
     |---|---|---|---|---|
     |Post|/hello/world|...|서버와 테스트 통신| result::ANY|
-    |Post|/join|id::아이디, password::패스워드|회원가입| result::ok|fail|
-    |Post|/login|id::아이디, password::패스워드|로그인| result::ok|fail|
+    |Post|/join|id::아이디, password::패스워드|회원가입| result::ok or fail|
+    |Post|/login|id::아이디, password::패스워드|로그인| result::ok or fail|
 
     * 위와 같은 표로 정리 : 클라이언트 개발자와의 소통 굿 
 
