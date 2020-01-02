@@ -2,6 +2,7 @@
 -pa ./deps/cowboy/ebin
 -pa ./deps/cowlib/ebin
 -pa ./deps/ranch/ebin
+-pa ./deps/jsx/ebin
 -eval "application:start(mon)"
 -sname node1
 -mnesia dir '"./db"'

@@ -105,3 +105,10 @@
 |Post|/join|id::아이디, password::패스워드|회원가입| result::ok or fail|
 |Post|/login|id::아이디, password::패스워드|로그인| result::ok or fail|
 |Post|/users/point|session_key ::,point::점수|유저의 점수 저장| result::ok or fail |
+
+
+* 새션 키를 만드는 것은 서버에서 중복되지 않는 고유한 키여야 한다. 
+    * 얼랭에서는 해시 키를 만드는 함수로 erlang:phash2(Term)을 사용할 수 있다. 
+    * 랜덤값 : random:seed(A1, A2, A3)로 seed를 만들고, random:uniform(N) 함수로 1부터 N까지의 숫자 중 하나를 랜덤으로 얻을 수 있다. A1, A2, A3는 integer 형식이어야 한다.
+
+* JSON 데이터를 생성하기 위해서는 jsx:encode, 그 반대로 JSON 데이터를 파싱해서 얼랭 형식으로 변환하려면 jsx:decode 사용 

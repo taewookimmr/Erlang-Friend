@@ -13,6 +13,7 @@
 %% API
 -export([install/0, uninstall/0]).
 
+
 install() ->
   ok = mnesia:create_schema([node()]),
   application:start(mnesia),

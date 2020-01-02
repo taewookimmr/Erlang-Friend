@@ -30,33 +30,36 @@ handle(Req,  State) ->
   ], Reply, Req4),
   {ok, Req5, State}.
 
+
 handle(<<"login">>, _, _, Data) ->
   Id = proplists:get_value(<<"id">>, Data),
   Password = proplists:get_value(<<"password">>, Data),
   case mon_users:login(Id, Password) of
-    ok ->
-      <<"{\"result\":\"login ok\"}">>;
+    {ok, SessionKey}->
+      jsx:encode([
+        {<<"result">>, <<"ok">>},
+        {<<"session_key">>, SessionKey}
+      ]);
     _ ->
-      <<"{\"result\":\"login fail\"}">>
+      jsx:encode([{<<"result">>, <<"fail">>}])
     end;
-
 
 handle(<<"join">>, _,_, Data) ->
   Id = proplists:get_value(<<"id">>, Data),
   Password = proplists:get_value(<<"password">>, Data),
   case mon_users:join(Id, Password) of
-    fail ->
-      <<"{\"result\":\"duplicated\"}">>;
-    ok ->
-      <<"{\"result\":\"join\"}">>
+    fail->
+      jsx:encode([{<<"result">>, <<"duplicated">>}]);
+    ok->
+      jsx:encode([{<<"result">>, <<"join">>}])
   end;
 
 
 handle(<<"hello">>, <<"world">>,_,_) ->
-  <<"{\"result\":\"Hello World\"}">>;
+  jsx:encode([{<<"result">>, <<"Hello World">>}]);
 
 handle(_, _,_,_) ->
-  <<"{\"result\":\"error\"}">>.
+  jsx:encode([{<<"result">>, <<"error">>}]).
 
 
 

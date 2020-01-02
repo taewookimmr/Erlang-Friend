@@ -58,6 +58,9 @@ start(_StartType, _StartArgs) ->
   %% Code_reloader 실행
   mon_reloader:start(),
 
+  %% Session Table 생성
+  ets:new(session_list, [public, named_table]),
+
   case mon_sup:start_link() of
     {ok, Pid} ->
       io:format("start ok~n"),
