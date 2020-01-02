@@ -99,9 +99,9 @@
 
 ### 5. 구현하기 
 
-    |Method|API|Body Query String|Description|Retun Data|
-    |---|---|---|---|---|---|
-    |Post|/hello/world|...|서버와 테스트 통신| result::ANY|
-    |Post|/join|id::아이디, password::패스워드|회원가입| result::ok or fail|
-    |Post|/login|id::아이디, password::패스워드|로그인| result::ok or fail|
-    |Post|/users/point|session_key ::, point:: 점수 | 유저의 점수 저장 |result::ok or fail |
+|Method|API|Body Query String|Description|Retun Data|
+|---|---|---|---|---|
+|Post|/hello/world|...|서버와 테스트 통신| result::ANY|
+|Post|/join|id::아이디, password::패스워드|회원가입| result::ok or fail|
+|Post|/login|id::아이디, password::패스워드|로그인| result::ok or fail|
+|Post|/users/point|session_key ::,point::점수|유저의 점수 저장| result::ok or fail |
