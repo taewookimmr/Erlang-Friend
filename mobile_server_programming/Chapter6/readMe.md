@@ -78,8 +78,30 @@
     * 얼랭 VM의 scheduler들은 각각의 Run Queue에 프로세스들을 실행하는데, 만약 한쪽 scheduler가 일을 다했는데, 다른 녀석은 바쁘다면, 바쁜 쪽의 일을 훔쳐와서, 효율성을 높인다.
         * 프로세스가 다른 scheduler로 새롭게 할당되는 것을 context switch인데 얼랭 VM에서는 현재 process struct를 가리키는 pointer를 변경하는 수준으로 간단하게 처리가 가능하다.
 
+    * waiting/running/runnable/free/exiting/suspended/hibernating/garbage_collecting
+        * waiting, suspended 프로세스 : 비활성화 프로세스 
+        * running, runnable 플세스 : 활성 상태의 프로세스
+
+        * waiting proc에 메시지가 도착하면 runnable이 되고, 그럼 scheduler의 Run Queue에 들어가서 running 상태로 실행하게 된다.
+            * waiting proc은 non-busy wait로 동작 
         
+        * running proc은 scheduler에 의해 block되지 않는다.
+        * suspended 상태는 필요에 읳새 프로세스를 잠시 중단시켜야 할 때 사용
+        
+### 4. 프로세스 생성 
 
+* spawn(Module, Function, Arguments)
 
+    * spawn을 실행하면 (이를 수행하는 주체도 프로세스) 해당 프로세스에서 새로운 프로세스를 Module:Function(Arguments)를 실행하여 생성한다.
 
+* f() : 지금까지 얼랭 쉘에서 사용했던 변수들을 초기화한다.
+* flush() : 도착한 모든 메시지를 출력한다
 
+### 5. 구현하기 
+
+    |Method|API|Body Query String|Description|Retun Data|
+    |---|---|---|---|---|---|
+    |Post|/hello/world|...|서버와 테스트 통신| result::ANY|
+    |Post|/join|id::아이디, password::패스워드|회원가입| result::ok or fail|
+    |Post|/login|id::아이디, password::패스워드|로그인| result::ok or fail|
+    |Post|/users/point|session_key ::, point:: 점수 | 유저의 점수 저장 |result::ok or fail |
