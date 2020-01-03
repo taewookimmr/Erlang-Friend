@@ -12,7 +12,7 @@
 -behaviour(gen_server).
 
 %% API
--export([start_link/1]).
+-export([start_link/1, join/2, leave/2, chat/3]).
 
 %% gen_server callbacks
 -export([init/1, handle_call/3, handle_cast/2, handle_info/2, terminate/2,
@@ -40,7 +40,18 @@ start_link(Room) ->
     {ok, State :: #state{}} | {ok, State :: #state{}, timeout() | hibernate} |
     {stop, Reason :: term()} | ignore).
 init([Room]) ->
+    io:format("init chat_admin ~p~n", [Room]),
     {ok, #state{room=Room}}.
+
+join(Room, User)->
+    gen_server:call(Room, {join, User}).
+
+leave(Room, User)->
+    gen_server:call(Room, {leave, User}).
+
+chat(Room, User, Message)->
+    gen_server:call(Room, {chat, User, Message}).
+
 
 %% @private
 %% @doc Handling call messages
@@ -52,7 +63,24 @@ init([Room]) ->
     {noreply, NewState :: #state{}, timeout() | hibernate} |
     {stop, Reason :: term(), Reply :: term(), NewState :: #state{}} |
     {stop, Reason :: term(), NewState :: #state{}}).
-handle_call(_Request, _From, State = #state{}) ->
+
+handle_call({join, User}, _From, State)->
+    Users=State#state.users,
+    NewUsers = Users++[User],
+    State1 = State#state{users=NewUsers},
+    {reply, {users, NewUsers}, State1};
+
+handle_call({leave, User}, _From, State)->
+    Users = State#state.users,
+    NewUsers = Users --[User],
+    State1 = State#state{users=NewUsers},
+    {reply, {users, NewUsers}, State1};
+
+handle_call({chat, User, Message}, _From, State)->
+    Reply = User ++ Message,
+    {reply, Reply, State};
+
+handle_call(_Request, _From, State)->
     {reply, ok, State}.
 
 %% @private
@@ -90,6 +118,8 @@ terminate(_Reason, _State = #state{}) ->
     {ok, NewState :: #state{}} | {error, Reason :: term()}).
 code_change(_OldVsn, State = #state{}, _Extra) ->
     {ok, State}.
+
+
 
 %%%===================================================================
 %%% Internal functions
