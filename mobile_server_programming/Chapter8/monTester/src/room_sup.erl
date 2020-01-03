@@ -1,12 +1,12 @@
 %%%-------------------------------------------------------------------
 %%% @author taewookim
-%%% @copyright (C) <COMPANY>
+%%% @copyright (C) 2020, <COMPANY>
 %%% @doc
 %%%
 %%% @end
-%%%
+%%% Created : 03. 1월 2020 오후 4:59
 %%%-------------------------------------------------------------------
--module(mon_sup).
+-module(room_sup).
 -author("taewookim").
 
 -behaviour(supervisor).
@@ -23,14 +23,8 @@
 %%% API functions
 %%%===================================================================
 
-%%--------------------------------------------------------------------
-%% @doc
-%% Starts the supervisor
-%%
-%% @end
-%%--------------------------------------------------------------------
--spec(start_link() ->
-    {ok, Pid :: pid()} | ignore | {error, Reason :: term()}).
+%% @doc Starts the supervisor
+-spec(start_link() -> {ok, Pid :: pid()} | ignore | {error, Reason :: term()}).
 start_link() ->
     supervisor:start_link({local, ?SERVER}, ?MODULE, []).
 
@@ -38,34 +32,25 @@ start_link() ->
 %%% Supervisor callbacks
 %%%===================================================================
 
-%%--------------------------------------------------------------------
 %% @private
-%% @doc
-%% Whenever a supervisor is started using supervisor:start_link/[2,3],
+%% @doc Whenever a supervisor is started using supervisor:start_link/[2,3],
 %% this function is called by the new process to find out about
 %% restart strategy, maximum restart frequency and child
 %% specifications.
-%%
-%% @end
-%%--------------------------------------------------------------------
 -spec(init(Args :: term()) ->
     {ok, {SupFlags :: {RestartStrategy :: supervisor:strategy(),
         MaxR :: non_neg_integer(), MaxT :: non_neg_integer()},
-        [ChildSpec :: supervisor:child_spec()]
-    }} |
-    ignore |
-    {error, Reason :: term()}).
+        [ChildSpec :: supervisor:child_spec()]}}
+    | ignore | {error, Reason :: term()}).
 init([]) ->
-    RestartStrategy = one_for_one,
+    RestartStrategy = simple_one_for_one,
     MaxRestarts = 1000,
     MaxSecondsBetweenRestarts = 3600,
 
     SupFlags = {RestartStrategy, MaxRestarts, MaxSecondsBetweenRestarts},
 
-    ChatManager = {chat_manager, {chat_manager, start_link, []}, permanent, 2000, worker, [chat_manager]},
-
-    RoomSup = {room_sup, {room_sup, start_link, []}, permanent, 2000, supervisor, [room_sup]},
-    {ok, {SupFlags, [ChatManager, RoomSup]}}.
+    ChatAdmin = {chat_admin, {chat_admin, start_link, []}, permanent, 2000, worker, [chat_admin]},
+    {ok, {SupFlags, [ChatAdmin]}}.
 
 %%%===================================================================
 %%% Internal functions
