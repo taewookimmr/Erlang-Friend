@@ -1,5 +1,13 @@
 ## Chapter 11. IRC Lite
 
+### Info
+
+* 이 챕터의 예제 소스코드에서 사용되는 gs module은 더 이상 사용되지 않고, 18.0부터는 remove될 것이라고 되어 있다. [관련 정보](http://www1.erlang.org/doc/man/gs.html)
+
+* gs 대신 WX를 사용하여 이 예제 코드가 돌아가도록 해보고 싶다. 하지만 이건 future work. 지금 중요한 것은 GUI 돌리는 것보다는 erlang에 대한 generals를 빨리 익히고 적용하는 것이다.
+
+* ws는 [여기](https://wxerlang.dougedmunds.com/)에서 공부하고 적용해봅시다.
+
 ### Intro
 
 * IRC : Internet Relay Chat 
