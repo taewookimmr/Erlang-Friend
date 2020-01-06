@@ -10,9 +10,11 @@ start(MM, _, _)->
 loop(MM)->
     receive
         {chan, MM, Msg}->
+            %% 클라이언트가 접속 시, 단순히 chat_server에 메시지를 던잘한ㄷ.
             chat_server ! {mm, MM, Msg},
             loop(MM);
         {'EXIT', MM, _Why}->
+            %% 클라이언트가 죽었다고 말한다.
             chat_server ! {mm_closed, MM};
 
         Other ->
