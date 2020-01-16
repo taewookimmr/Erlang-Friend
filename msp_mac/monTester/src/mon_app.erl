@@ -12,8 +12,7 @@
 -behaviour(application).
 
 %% Application callbacks
--export([start/2,
-  stop/1]).
+-export([start/2, stop/1]).
 
 %%%===================================================================
 %%% Application callbacks
@@ -31,18 +30,34 @@
 %% @end
 %%--------------------------------------------------------------------
 -spec(start(StartType :: normal | {takeover, node()} | {failover, node()},
-    StartArgs :: term()) ->
-  {ok, pid()} |
-  {ok, pid(), State :: term()} |
-  {error, Reason :: term()}).
+	StartArgs :: term()) ->
+		{ok, pid()} |
+		{ok, pid(), State :: term()} |
+		{error, Reason :: term()}).
+
 start(_StartType, _StartArgs) ->
-  case 'mon_sup':start_link() of
-    {ok, Pid} ->
-      io:format("start ok~n"),
-      {ok, Pid};
-    Error ->
-      Error
-  end.
+	%% 필요한 어플리케이션 실행
+	ok = application:start(crypto),
+	ok = application:start(cowlib),
+	ok = application:start(ranch),
+	ok = application:start(cowboy),
+
+	%% cowboy router 설정
+	Dispatch = cowboy_router:compile([
+		{'_', [{"/hello/world", mon_http, []}]}
+	]),
+	%% http server 실행
+	%% 실제로 소켓을 열고 서버를 구동하는 부분이다.
+	{ok, _} = cowboy:start_http(http, 100, [{port, 6060}], [{env, [{dispatch, Dispatch}]}]),
+
+
+	case 'mon_sup':start_link() of
+		{ok, Pid} ->
+			io:format("start ok~n"),
+			{ok, Pid};
+		Error ->
+			Error
+	end.
 
 %%--------------------------------------------------------------------
 %% @private
@@ -55,7 +70,7 @@ start(_StartType, _StartArgs) ->
 %%--------------------------------------------------------------------
 -spec(stop(State :: term()) -> term()).
 stop(_State) ->
-  ok.
+	ok.
 
 %%%===================================================================
 %%% Internal functions

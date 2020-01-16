@@ -1,0 +1,3 @@
+45f750db410a4b08c68d142ad0af839f544c5d3d	not-for-merge	branch '1.0.x' of git://github.com/extend/cowlib
+04e000fa40280c580a333a4da1012b5508cad48b	not-for-merge	branch 'faster-http2' of git://github.com/extend/cowlib
+e7852121a01e511b002e3af2851b7b8780ca1902	not-for-merge	branch 'master' of git://github.com/extend/cowlib
